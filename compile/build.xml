@@ -1,0 +1,32 @@
+<project name="GCM PoC" default="compile">
+
+   <import file="build_paths.xml"/>
+
+   <target name="compile">
+      <mkdir dir="${classes.dir}" />
+      <copy  file="${log4j.properties}" todir="${classes.dir}"/>
+      <javac srcdir="${src.dir}" destdir="${classes.dir}" includes="**" deprecation="on" source="${source}" debug="${debug}">
+         <classpath refid="compile.classpath" />
+      </javac>
+<!--
+      <copy todir="${classes.dir}/${package.path}"  verbose="true">
+		   <fileset dir="${src.dir}/${package.path}" >
+		      <include name="adl/*.fractal"/>
+		      <include name="descriptors/*.xml"/>
+		   </fileset>
+      </copy>
+-->
+   </target>
+
+   <!-- ==================================================================== -->
+   <!--            Cleans the built files			                             -->
+   <!-- ==================================================================== -->
+   <target  name="clean" description="Deletes the generated files">
+      <delete verbose="true" includeemptydirs="true">
+         <fileset dir="${base.dir}">
+            <include name="classes/**"/>
+         </fileset>
+      </delete>
+   </target>
+
+</project>

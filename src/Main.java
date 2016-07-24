@@ -1,7 +1,5 @@
 package test.gpabon.gcmpoc;
 
-import org.objectweb.proactive.ActiveObjectCreationException;
-import org.objectweb.proactive.core.node.NodeException;
 import org.objectweb.proactive.api.PAActiveObject;
 
 
@@ -13,26 +11,25 @@ public class Main {
     public static void main(String[] args) {
         try {
             
-            Server[] servers = new Server[SERVERS];
+            ServerController[] servers = new ServerController[SERVERS];
             // creation of Active Objects
             for (int i=0; i<SERVERS; i++) {
-                servers[i] = (Server) PAActiveObject.newActive(Server.class.getName(), null);
+                servers[i] = (ServerController) PAActiveObject.newActive(
+                    ServerController.class.getName(), null);
             }
             // creation of active objects ring
             for (int i=0; i<SERVERS-1; i++) {
-                servers[i].setNextServer(servers[i+1],false);
+                servers[i].serverInitialization(servers[i+1],false,servers[i]);
             }
-            servers[SERVERS-1].setNextServer(servers[0],true);
+            servers[SERVERS-1].serverInitialization(servers[0],true,servers[SERVERS-1]);
             // Send all requests to servers[0]
             for (int j=0; j<REQUESTS; j++) {
                 servers[0].calculateResult("Request " + j);
             }
             // enqueue terminate message 
-            PAActiveObject.terminateActiveObject(servers[0],false);
-        } catch (NodeException nodeExcep) {
-            System.err.println(nodeExcep.getMessage());
-        } catch (ActiveObjectCreationException aoExcep) {
-            System.err.println(aoExcep.getMessage());
+            servers[0].terminate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

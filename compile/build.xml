@@ -8,14 +8,14 @@
       <javac srcdir="${src.dir}" destdir="${classes.dir}" includes="**" deprecation="on" source="${source}" debug="${debug}">
          <classpath refid="compile.classpath" />
       </javac>
-<!--
+
       <copy todir="${classes.dir}/${package.path}"  verbose="true">
-		   <fileset dir="${src.dir}/${package.path}" >
+		   <fileset dir="${src.dir}" >
 		      <include name="adl/*.fractal"/>
 		      <include name="descriptors/*.xml"/>
 		   </fileset>
       </copy>
--->
+
    </target>
 
    <!-- ==================================================================== -->
